@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <asset>
+        <contributor>
+            <authoring_tool>Google SketchUp 8.0.16846</authoring_tool>
+        </contributor>
+        <created>2014-03-02T20:13:51Z</created>
+        <modified>2014-03-02T20:13:51Z</modified>
+        <unit meter="0.02539999969303608" name="inch" />
+        <up_axis>Z_UP</up_axis>
+    </asset>
+
+    <library_geometries>
+        <geometry id="ID2">
+            <mesh>
+                <source id="ID5">
+                    <float_array id="ID7" count="24">0 0 0 2.985246939107611 -22.04177721853884 -10.28055185701837 -11.65387961654218 -26.8633297300005 -10.1485491079595 -19.3324045820614 9.138027899223015 -10.1485491079595 -4.717718140852325 20.29849423779948 -10.1485491079595 8.055066745523305 12.20562579582652 -10.1485491079595 -22.53996477876256 -12.61763089230757 -10.1485491079595 11.00247541791765 -6.008148224239513 -10.1485491079595</float_array>
+                    <technique_common>
+                        <accessor count="8" source="#ID7" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="ID6">
+                    <input semantic="POSITION" source="#ID5" />
+                </vertices>
+                <lines count="7" material="Material2">
+                    <input offset="0" semantic="VERTEX" source="#ID6" />
+                    <p>1 0 2 0 3 0 4 0 5 0 6 0 7 0</p>
+                </lines>
+            </mesh>
+        </geometry>
+    </library_geometries>
+
+    <scene>
+        <instance_visual_scene url="#ID1" />
+    </scene>
+</COLLADA>

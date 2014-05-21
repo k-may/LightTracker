@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <model path="7point.dae">
+    <pitch>2</pitch>
+    <roll>8</roll>
+    <yaw>97</yaw>
+    <x>806</x>
+    <y>524</y>
+    <z>759</z>
+  </model>
+</data>
