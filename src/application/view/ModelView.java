@@ -20,15 +20,10 @@ public class ModelView extends View {
 		
 		p.stroke(100);
 		
-		PVector position = _adapter.position;
+		Triangle[] triangles = _adapter.getTriangles();
 		
-		p.translate(position.x, position.y, position.z);
-		p.rotateX((float) (_adapter.roll* Math.PI / 180));
-		p.rotateY((float) (_adapter.pitch * Math.PI / 180));
-		p.rotateZ((float) (_adapter.yaw * Math.PI / 180));
-		
-		for (int i = 0; i < _adapter.getTriangles().length; i++) {
-			drawTriangle(_adapter.getTriangles()[i], p);
+		for (int i = 0; i < triangles .length; i++) {
+			drawTriangle(triangles[i], p);
 		}
 		
 		p.popMatrix();

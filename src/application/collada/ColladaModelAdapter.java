@@ -3,6 +3,8 @@ package application.collada;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import processing.core.PApplet;
+import processing.core.PMatrix3D;
 import processing.core.PVector;
 import application.base.Triangle;
 import application.clients.DataXMLClient;
@@ -12,65 +14,136 @@ import application.interaction.LightData;
 public class ColladaModelAdapter {
 
 	private ColladaModelData _model;
+
 	public float[] lightValues;
 	private int _length;
-	
-	public int pitch;
-	public int roll;
-	public PVector position;
-	
+
+	private int _pitch;
+
+	private int _roll;
+	private PVector _position;
+	private int _yaw;
+
 	DataXMLClient _xml;
-	public int yaw;
+
+	Triangle[] _transformed;
+	private boolean _invalidated = true;
+
 	/*
 	 * contains reference to 3D model
 	 */
-	public ColladaModelAdapter(ColladaModelData model, DataXMLClient xml){
+	public ColladaModelAdapter(ColladaModelData model, DataXMLClient xml) {
 		_model = model;
 		_xml = xml;
-		
-		pitch = _xml.getPitch();
-		roll = _xml.getRoll();
-		yaw = _xml.getYaw();
-		position = _xml.getPosition();
-		
-		_length = _model.getTriangles().length;
+
+		_pitch = _xml.getPitch();
+		_roll = _xml.getRoll();
+		_yaw = _xml.getYaw();
+		_position = _xml.getPosition();
+
+		_length = _model.getOrigTriangles().length;
 	}
-	
-	
-	
-	public Triangle[] getTriangles(){
-		Triangle[] triangles = _model.getTriangles();
-		
-		//apply pitch and roll and position?
-		
-		
-		return triangles;
+
+	public Triangle[] getTriangles() {
+
+		if (_invalidated) {
+			_invalidated = false;
+
+			Triangle[] triangles = _model.getOrigTriangles();
+
+			// apply pitch and roll and position?
+			PMatrix3D mat = new PMatrix3D();
+			mat.translate(_position.x, _position.y, _position.z);
+			mat.rotateX(PApplet.radians(_roll));
+			mat.rotateY(PApplet.radians(_pitch));
+			mat.rotateZ(PApplet.radians(_yaw));
+
+			_transformed = new Triangle[triangles.length];
+
+			for (int i = 0; i < triangles.length; i++) {
+				_transformed[i] = triangles[i].applyMatrix(mat);
+			}
+		}
+
+		return _transformed;
 	}
+
 	/*
 	 * process incoming light vectors and calculate additive light values on
 	 * each face of the model
 	 */
 	public void handleLightStreamData(ArrayList<LightData> lightData) {
 
-		Triangle[] triangles = _model.getTriangles();
+		Triangle[] triangles = getTriangles();
 		lightValues = new float[_length];
-		
-		for(LightData data : lightData){
-			for(int i = 0 ;i < _length; i ++){
-				PVector lightV = PVector.sub(data.position, triangles[i].center);
+
+		for (LightData data : lightData) {
+			for (int i = 0; i < _length; i++) {
+				PVector lightV = PVector
+						.sub(data.position, triangles[i].center);
 				float lV = triangles[i].perpNorm.dot(lightV);
 				lV = Math.min(0, lV);
-				
+
 				lV *= 255;
-				//additive light
-				triangles[i].lightValue = (int)lV;
+				// additive light
+				triangles[i].lightValue = (int) lV;
 				lightValues[i] += lV;
 			}
 		}
 	}
 
-
 	public void save() {
 		_xml.save(this);
+	}
+
+	public int getPitch() {
+		return _pitch;
+	}
+
+	public void setPitch(int pitch) {
+		this._pitch = pitch;
+		_invalidated = true;
+	}
+
+	public int getRoll() {
+		return _roll;
+	}
+
+	public void setRoll(int roll) {
+		this._roll = roll;
+		_invalidated = true;
+	}
+
+	public PVector getPosition() {
+		return _position;
+	}
+
+	public void setPosition(PVector position) {
+		this._position = position;
+		_invalidated = true;
+	}
+
+	public int getYaw() {
+		return _yaw;
+	}
+
+	public void setYaw(int yaw) {
+		this._yaw = yaw;
+		_invalidated = true;
+	}
+
+	public void setX(int x) {
+		_position.x = x;
+		_invalidated = true;
+	}
+
+	public void setY(int y) {
+		_position.y = y;
+		_invalidated = true;
+	}
+
+	public void setZ(int z) {
+		_position.z = z;
+		_invalidated = true;
 	}
 }

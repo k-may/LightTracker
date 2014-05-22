@@ -5,6 +5,8 @@ import java.net.URLDecoder;
 
 import lighttracker.LightTracker;
 import processing.core.PApplet;
+import processing.event.MouseEvent;
+import SimpleOpenNI.SimpleOpenNI;
 import application.clients.DataXMLClient;
 import application.collada.ColladaModelData;
 import application.collada.ColladaModelLoader;
@@ -12,6 +14,7 @@ import application.collada.ModelFacade;
 import application.interaction.SONRegion;
 import application.sculpture.SculptureFacade;
 import application.view.ControlsView;
+import application.view.KinectView;
 import application.view.MainView;
 import application.view.IView;
 import application.view.ModelView;
@@ -39,7 +42,7 @@ public class AppBuilder {
 		initModel();
 		
 		//setup kinect region
-		//initInteraction();
+		initInteraction();
 		
 		//setup microcontroller and comm
 		//initSculpture();
@@ -52,12 +55,18 @@ public class AppBuilder {
 	private void initUI() {
 		MainView view = new MainView();
 		((IView) LightTracker.instance).addChild(view);
-		
+		((LightTracker)_parent).registerMainView(view);
+		view.set_width(_parent.displayWidth);
+		view.set_height(_parent.displayHeight);
+
 		ControlsView controls = new ControlsView(_model.getAdapter());
+		controls.set_height(_parent.displayHeight);
 		view.registerControlsView(controls);
 		
 		ModelView modelView = new ModelView(_model.getAdapter());
 		view.registerModelView(modelView);
+		
+		KinectView kinectView = new KinectView(_region.getSON());
 		
 	}
 
@@ -91,17 +100,15 @@ public class AppBuilder {
 	}
 
 	private void start() {
-		Controller controller = new Controller(_sculpture, _model);
 		_parent.loop();
 	}
 
 	private void initInteraction() {
-		//_region = new SONRegion(_adapter);
+		SimpleOpenNI son = new SimpleOpenNI(_parent);
+		son.enableDepth();
+		
+		_region = new SONRegion(_model.getAdapter(), son);
+		((LightTracker)_parent).registerSONRegion(_region);
 	}
-
-	public SONRegion getRegion() {
-		// TODO Auto-generated method stub
-		return _region;
-	}
-
+	
 }

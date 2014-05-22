@@ -53,12 +53,12 @@ public class DataXMLClient extends XMLClient {
 	}
 
 	public void save(ColladaModelAdapter adapter) {
-		xml.getChild("model").getChild("roll").setIntContent(adapter.roll);
-		xml.getChild("model").getChild("pitch").setIntContent(adapter.pitch);
-		xml.getChild("model").getChild("yaw").setIntContent(adapter.yaw);
-		xml.getChild("model").getChild("x").setIntContent((int) adapter.position.x);
-		xml.getChild("model").getChild("y").setIntContent((int) adapter.position.y);
-		xml.getChild("model").getChild("z").setIntContent((int) adapter.position.z);
+		xml.getChild("model").getChild("roll").setIntContent(adapter.getRoll());
+		xml.getChild("model").getChild("pitch").setIntContent(adapter.getPitch());
+		xml.getChild("model").getChild("yaw").setIntContent(adapter.getYaw());
+		xml.getChild("model").getChild("x").setIntContent((int) adapter.getPosition().x);
+		xml.getChild("model").getChild("y").setIntContent((int) adapter.getPosition().y);
+		xml.getChild("model").getChild("z").setIntContent((int) adapter.getPosition().z);
 		LightTracker.instance.saveXML(xml, _filePath + "config.xml");
 	}
 }

@@ -23,14 +23,13 @@ public class LightTracker extends PApplet implements IView {
 	public static int CAM_WIDTH = 640;
 	public static int CAM_HEIGHT = 420;
 	public static int CAM_DEPTH = 2000;
-	
+
 	ArrayList<IView> _childs;
-	
-	
-			
+	private MainView _mainView;
+
 	public void setup() {
 		size(displayWidth, displayHeight, PApplet.P3D);
-		
+
 		if (_childs == null) {
 			_childs = new ArrayList<>();
 
@@ -39,36 +38,33 @@ public class LightTracker extends PApplet implements IView {
 
 			instance = this;
 			builder = new AppBuilder(this);
-			region = builder.getRegion();
 		}
-
-
 	}
 
 	public void draw() {
 		background(255);
-		
+
 		Controller.instance.runEvents();
-		
+
 		TrackerState state = StateManager.GetState();
-		
-		switch(state){
-			case Alignment:
-				
-				break;
-			case Interaction:
-				region.runInteractions();
-							
-				break;
+
+		switch (state) {
+		case Alignment:
+
+			break;
+		case Interaction:
+			region.runInteractions();
+
+			break;
 		}
-		
+
 		draw(this);
 	}
 
 	public static void main(String _args[]) {
 		PApplet.main(new String[] { lighttracker.LightTracker.class.getName() });
 	}
-	
+
 	@Override
 	public boolean sketchFullScreen() {
 		return true;
@@ -76,9 +72,28 @@ public class LightTracker extends PApplet implements IView {
 
 	@Override
 	public void draw(PApplet p) {
-		for(IView child : _childs){
+		for (IView child : _childs) {
 			child.draw(p);
 		}
+	}
+
+	public void registerMainView(MainView view) {
+		_mainView = view;
+	}
+
+	@Override
+	public void mousePressed() {
+		_mainView.mousePressed(mouseX, mouseY);
+	}
+
+	@Override
+	public void mouseExited() {
+		_mainView.mouseExited(mouseX, mouseY);
+	}
+	
+	@Override
+	public void mouseReleased() {
+		_mainView.mouseReleased(mouseX, mouseY);
 	}
 
 	@Override
@@ -96,7 +111,7 @@ public class LightTracker extends PApplet implements IView {
 	@Override
 	public void set_parent(IView view) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -108,7 +123,7 @@ public class LightTracker extends PApplet implements IView {
 	@Override
 	public void setVisible(Boolean isVisible) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -156,6 +171,10 @@ public class LightTracker extends PApplet implements IView {
 	@Override
 	public PVector get_absPos() {
 		// TODO Auto-generated method stub
-		return new PVector(0,0);
+		return new PVector(0, 0);
+	}
+
+	public void registerSONRegion(SONRegion region) {
+		_region = _region;
 	}
 }

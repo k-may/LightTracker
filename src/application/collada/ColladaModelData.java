@@ -18,7 +18,7 @@ public class ColladaModelData {
 		_triangles = triangles;
 	}
 
-	public application.base.Triangle[] getTriangles(){
+	public application.base.Triangle[] getOrigTriangles(){
 		return _triangles;
 	}
 
