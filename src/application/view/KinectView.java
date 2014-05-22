@@ -16,6 +16,11 @@ public class KinectView extends View {
 	public void draw(PApplet p) {
 		// TODO Auto-generated method stub
 	
+		_son.update();
+		
+		//p.strokeWeight(10);
+		p.smooth();
+		p.strokeWeight(1);
 		p.stroke(0);
 		
 		PVector[] depthPoints = _son.depthMapRealWorld();

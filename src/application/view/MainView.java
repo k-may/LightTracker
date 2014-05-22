@@ -18,6 +18,7 @@ public class MainView extends View {
 	
 	private int _pitch = 0;
 	private int _roll = 0;
+	private int _z = 0;
 	
 	private int _downTime;
 	private PVector _downPos;
@@ -67,7 +68,7 @@ public class MainView extends View {
 		
 		p.pushMatrix();
 		
-		p.translate(_width/2, _height/2);
+		p.translate(_width/2, _height/2, _z);
 		p.rotateX(PApplet.radians(_roll));
 		p.rotateY(PApplet.radians(_pitch));
 		
@@ -80,13 +81,11 @@ public class MainView extends View {
 
 	private void mouseDragged(int mouseX, int mouseY) {
 		
-		Point mousePos = new Point(mouseX, mouseY);
+		PVector mousePos = new PVector(mouseX, mouseY);
+		_pitch += (int) (_downPos.x - mousePos.x)/10;
+		_roll += (int) (_downPos.y - mousePos.y)/10 ;
 		
-		//double distance = Point.distance(_downPos.x, _downPos.y, mousePos.x, mousePos.y);
-		
-		_pitch = (int) ((_downPos.x - mousePos.x) / _width);
-		_roll = (int) ((_downPos.y - mousePos.y) / _height);
-		
+		_downPos = mousePos;
 	}
 
 
@@ -106,6 +105,11 @@ public class MainView extends View {
 
 	public void mouseReleased(int x, int y) {
 		_mouseDown = false;
+	}
+
+
+	public void mouseWheel(int count) {		
+		_z -= count*100;
 	}
 
 }

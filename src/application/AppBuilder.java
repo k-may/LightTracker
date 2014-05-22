@@ -67,6 +67,7 @@ public class AppBuilder {
 		view.registerModelView(modelView);
 		
 		KinectView kinectView = new KinectView(_region.getSON());
+		view.registerKinectView(kinectView);
 		
 	}
 
@@ -106,6 +107,7 @@ public class AppBuilder {
 	private void initInteraction() {
 		SimpleOpenNI son = new SimpleOpenNI(_parent);
 		son.enableDepth();
+		son.setMirror(false);
 		
 		_region = new SONRegion(_model.getAdapter(), son);
 		((LightTracker)_parent).registerSONRegion(_region);

@@ -17,7 +17,7 @@ public class ModelView extends View {
 	public void draw(PApplet p) {
 
 		p.pushMatrix();
-		
+
 		p.stroke(100);
 		
 		Triangle[] triangles = _adapter.getTriangles();

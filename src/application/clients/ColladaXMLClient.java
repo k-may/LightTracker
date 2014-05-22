@@ -29,20 +29,16 @@ public class ColladaXMLClient extends XMLClient {
 	}
 
 	public application.base.Triangle[] getTrianglesFromLines(){
-		
-		
+
 		Line[] lines = loader.getLines();
 
 		Triangle[] trianges = new Triangle[lines.length];
-		
 		
 		for(int i = 0; i < lines.length; i ++){
 				Triangle triange = createTriangleFromLines(lines[i], lines[(i + 1) % lines.length]);
 				trianges[i] = triange;
 		}
-		
-		
-		
+	
 		return trianges;
 		
 	}
@@ -72,7 +68,6 @@ public class ColladaXMLClient extends XMLClient {
 	
 	private PVector p3DToPV(Point3D input){
 		PVector out =  new PVector(input.x, input.y, input.z);
-		PApplet.println("new vector : " + out.toString());
 		return out;
 	}
 	
@@ -88,9 +83,7 @@ public class ColladaXMLClient extends XMLClient {
 		while(tCount < colTriangles.length){
 			
 			cooladaLoader.Triangle triangle = colTriangles[tCount];
-			//if(triangle != null){
 			triangles[tCount] = convertColTriangleToTriange(triangle);//new application.base.Triangle(pt1, pt2, pt3);
-			//}
 			tCount ++;
 			
 		}

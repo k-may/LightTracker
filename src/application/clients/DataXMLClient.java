@@ -59,6 +59,11 @@ public class DataXMLClient extends XMLClient {
 		xml.getChild("model").getChild("x").setIntContent((int) adapter.getPosition().x);
 		xml.getChild("model").getChild("y").setIntContent((int) adapter.getPosition().y);
 		xml.getChild("model").getChild("z").setIntContent((int) adapter.getPosition().z);
+		xml.getChild("model").getChild("scale").setIntContent((int) adapter.getScale());
 		LightTracker.instance.saveXML(xml, _filePath + "config.xml");
+	}
+
+	public int getScale() {
+		return xml.getChild("model").getChild("scale").getIntContent();
 	}
 }

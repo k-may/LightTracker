@@ -29,6 +29,8 @@ public class ColladaModelAdapter {
 	Triangle[] _transformed;
 	private boolean _invalidated = true;
 
+	private float _scale;
+
 	/*
 	 * contains reference to 3D model
 	 */
@@ -40,6 +42,7 @@ public class ColladaModelAdapter {
 		_roll = _xml.getRoll();
 		_yaw = _xml.getYaw();
 		_position = _xml.getPosition();
+		_scale = _xml.getScale();
 
 		_length = _model.getOrigTriangles().length;
 	}
@@ -53,6 +56,7 @@ public class ColladaModelAdapter {
 
 			// apply pitch and roll and position?
 			PMatrix3D mat = new PMatrix3D();
+			mat.scale(_scale);
 			mat.translate(_position.x, _position.y, _position.z);
 			mat.rotateX(PApplet.radians(_roll));
 			mat.rotateY(PApplet.radians(_pitch));
@@ -144,6 +148,15 @@ public class ColladaModelAdapter {
 
 	public void setZ(int z) {
 		_position.z = z;
+		_invalidated = true;
+	}
+
+	public float getScale() {
+		return _scale;
+	}
+
+	public void setScale(float value) {
+		_scale = value;
 		_invalidated = true;
 	}
 }

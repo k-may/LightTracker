@@ -34,6 +34,8 @@ public class ControlsView extends View implements ControlListener {
 	Knob xPos;
 	Knob yPos;
 	Knob zPos;
+	
+	Knob scale;
 
 	Bang save;
 
@@ -82,6 +84,11 @@ public class ControlsView extends View implements ControlListener {
 				.setMin(-1000).setMax(1000).setValue(_adapter.getPosition().z);
 
 		y += knobInc;
+		
+		scale = controller.addKnob("scale").setRadius(_radius).setPosition(x, y)
+				.setMin(-5).setMax(5).setValue(_adapter.getScale());
+
+		y += knobInc;
 
 		save = controller.addBang("save").setWidth(_radius).setPosition(x, y);
 
@@ -103,8 +110,10 @@ public class ControlsView extends View implements ControlListener {
 		}
 		
 		p.fill(0, 100);
-		p.rect(_x, _y, _width, _height);
+		p.rect(_x, _y, 135, _height);
 		
+		
+		save.setPosition(59, 500);
 		super.draw(p);
 	}
 
@@ -126,6 +135,8 @@ public class ControlsView extends View implements ControlListener {
 			_adapter.setZ((int) event.getController().getValue());
 		} else if (name == "save") {
 			_adapter.save();
+		} else if(name == "scale"){
+			_adapter.setScale(event.getController().getValue());
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import processing.event.MouseEvent;
 import application.AppBuilder;
 import application.Controller;
 import application.StateManager;
@@ -15,7 +16,6 @@ import application.view.IView;
 @SuppressWarnings("serial")
 public class LightTracker extends PApplet implements IView {
 
-	private SONRegion region;
 	private AppBuilder builder;
 	private MainView _view;
 	public static PApplet instance;
@@ -26,6 +26,7 @@ public class LightTracker extends PApplet implements IView {
 
 	ArrayList<IView> _childs;
 	private MainView _mainView;
+	private SONRegion _region;
 
 	public void setup() {
 		size(displayWidth, displayHeight, PApplet.P3D);
@@ -44,7 +45,7 @@ public class LightTracker extends PApplet implements IView {
 	public void draw() {
 		background(255);
 
-		Controller.instance.runEvents();
+		//Controller.instance.runEvents();
 
 		TrackerState state = StateManager.GetState();
 
@@ -53,7 +54,7 @@ public class LightTracker extends PApplet implements IView {
 
 			break;
 		case Interaction:
-			region.runInteractions();
+			_region.runInteractions();
 
 			break;
 		}
@@ -96,6 +97,10 @@ public class LightTracker extends PApplet implements IView {
 		_mainView.mouseReleased(mouseX, mouseY);
 	}
 
+	@Override
+	public void mouseWheel(MouseEvent evt) {
+		_mainView.mouseWheel(evt.getCount());
+	}
 	@Override
 	public void addChild(IView child) {
 		_childs.add(child);
@@ -175,6 +180,6 @@ public class LightTracker extends PApplet implements IView {
 	}
 
 	public void registerSONRegion(SONRegion region) {
-		_region = _region;
+		_region = region;
 	}
 }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
   <model path="data/7point.dae">
-    <pitch>40</pitch>
-    <roll>104</roll>
-    <yaw>157</yaw>
-    <x>865</x>
-    <y>514</y>
-    <z>775</z>
+    <pitch>41</pitch>
+    <roll>80</roll>
+    <yaw>180</yaw>
+    <x>33</x>
+    <y>0</y>
+    <z>49</z>
+    <scale>5</scale>
   </model>
 </data>
