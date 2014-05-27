@@ -2,25 +2,34 @@ package application.interaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import blobDetection.Blob;
+import blobDetection.BlobDetection;
 import SimpleOpenNI.SimpleOpenNI;
+import application.base.Rectangle;
 import application.collada.ColladaModelAdapter;
+import application.collada.IAdapterObserver;
+import processing.core.PApplet;
+import processing.core.PImage;
 import processing.core.PVector;
 
-public class SONRegion {
+public class SONRegion{
 
 	private Map<Integer, HeadData> _headData;
-	private ArrayList<LightData> _streamData;
 
-	private ColladaModelAdapter _adapter;
-	private SimpleOpenNI _son;
-	
-	public SONRegion(ColladaModelAdapter adapter, SimpleOpenNI son){
-		_adapter = adapter;
-		_son = son;
+	public SONRegion() {
+
 	}
 	
+
+	public void digestTrackerStream(ArrayList<TrackerData> arrayList) {
+
+	}
+
+
 	public void onLostHead(int id) {
 
 	}
@@ -49,21 +58,16 @@ public class SONRegion {
 		headData.addPosition(pos);
 	}
 
-	public void runInteractions(){
-		_streamData = new ArrayList<LightData>();
-		
-		for(HeadData data : _headData.values()){
-			processInput(data);
+	private ArrayList<HeadData> getHeadDataAsList() {
+		ArrayList<HeadData> headDataList = new ArrayList<>();
+		Iterator it = _headData.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Integer, HeadData> pairs = (Entry<Integer, HeadData>) it
+					.next();
+			headDataList.add(pairs.getValue());
 		}
-		
-		_adapter.handleLightStreamData(_streamData);
+		return headDataList;
 	}
 
-	private void processInput(HeadData data) {
-		//invert position -- generate light vector
-	}
 
-	public SimpleOpenNI getSON() {
-		return _son;
-	}
 }

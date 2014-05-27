@@ -78,5 +78,6 @@
 	<classpathentry kind="lib" path="/GestureDraw/lib/base/core/jogl-all-natives-windows-i586.jar"/>
 	<classpathentry kind="lib" path="/GestureDraw/lib/base/core/jogl-all.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/collada"/>
+	<classpathentry kind="lib" path="C:/Users/Kev/Documents/Processing/libraries/blobDetection/library/blobDetection.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

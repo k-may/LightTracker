@@ -16,9 +16,9 @@ public class MainView extends View {
 	
 	ArrayList<IView> _childs;
 	
-	private int _pitch = 0;
-	private int _roll = 0;
-	private int _z = 0;
+	private int _pitch = 90;
+	private int _roll = 180;
+	private int _z = -2500;
 	
 	private int _downTime;
 	private PVector _downPos;
@@ -68,8 +68,8 @@ public class MainView extends View {
 		
 		p.pushMatrix();
 		
-		p.translate(_width/2, _height/2, _z);
-		p.rotateX(PApplet.radians(_roll));
+		p.translate(_width/2 - 200, _height/2, _z);
+		p.rotateX(PApplet.radians(180));
 		p.rotateY(PApplet.radians(_pitch));
 		
 		_modelView.draw(p);

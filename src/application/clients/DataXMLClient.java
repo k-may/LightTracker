@@ -47,23 +47,35 @@ public class DataXMLClient extends XMLClient {
 	public int getRoll() {
 		return xml.getChild("model").getChild("roll").getIntContent();
 	}
-	
-	public int getYaw(){
-		return xml.getChild("model").getChild("yaw").getIntContent();		
+
+	public int getYaw() {
+		return xml.getChild("model").getChild("yaw").getIntContent();
 	}
 
 	public void save(ColladaModelAdapter adapter) {
 		xml.getChild("model").getChild("roll").setIntContent(adapter.getRoll());
-		xml.getChild("model").getChild("pitch").setIntContent(adapter.getPitch());
+		xml.getChild("model").getChild("pitch")
+				.setIntContent(adapter.getPitch());
 		xml.getChild("model").getChild("yaw").setIntContent(adapter.getYaw());
-		xml.getChild("model").getChild("x").setIntContent((int) adapter.getPosition().x);
-		xml.getChild("model").getChild("y").setIntContent((int) adapter.getPosition().y);
-		xml.getChild("model").getChild("z").setIntContent((int) adapter.getPosition().z);
-		xml.getChild("model").getChild("scale").setIntContent((int) adapter.getScale());
+		xml.getChild("model").getChild("x")
+				.setIntContent((int) adapter.getPosition().x);
+		xml.getChild("model").getChild("y")
+				.setIntContent((int) adapter.getPosition().y);
+		xml.getChild("model").getChild("z")
+				.setIntContent((int) adapter.getPosition().z);
+		xml.getChild("model").getChild("scale")
+				.setFloatContent(adapter.getScale());
+
+		xml.getChild("kinect").getChild("threshold")
+				.setFloatContent(adapter.getBlobThreshold());
 		LightTracker.instance.saveXML(xml, _filePath + "config.xml");
 	}
 
-	public int getScale() {
-		return xml.getChild("model").getChild("scale").getIntContent();
+	public float getScale() {
+		return xml.getChild("model").getChild("scale").getFloatContent();
+	}
+
+	public float getBlogThreshold() {
+		return xml.getChild("kinect").getChild("threshold").getFloatContent();
 	}
 }

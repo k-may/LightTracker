@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PVector;
 import processing.event.MouseEvent;
+import SimpleOpenNI.SimpleOpenNI;
 import application.AppBuilder;
 import application.Controller;
 import application.StateManager;
 import application.TrackerState;
 import application.interaction.SONRegion;
+import application.interaction.Tracker;
 import application.view.MainView;
 import application.view.IView;
 
 @SuppressWarnings("serial")
 public class LightTracker extends PApplet implements IView {
 
-	private AppBuilder builder;
-	private MainView _view;
 	public static PApplet instance;
 
 	public static int CAM_WIDTH = 640;
@@ -26,7 +26,11 @@ public class LightTracker extends PApplet implements IView {
 
 	ArrayList<IView> _childs;
 	private MainView _mainView;
+	private Tracker _tracker;
 	private SONRegion _region;
+
+	public static PVector[] depthData;
+	private SimpleOpenNI _son;
 
 	public void setup() {
 		size(displayWidth, displayHeight, PApplet.P3D);
@@ -38,26 +42,20 @@ public class LightTracker extends PApplet implements IView {
 			noLoop();
 
 			instance = this;
-			builder = new AppBuilder(this);
+			
+			AppBuilder.start(this);
 		}
 	}
 
 	public void draw() {
 		background(255);
-
-		//Controller.instance.runEvents();
-
-		TrackerState state = StateManager.GetState();
-
-		switch (state) {
-		case Alignment:
-
-			break;
-		case Interaction:
-			_region.runInteractions();
-
-			break;
-		}
+		
+		_son.update();
+		depthData = _son.depthMapRealWorld();
+		
+		_tracker.digestDepthStream(depthData);
+		
+		_region.digestTrackerStream(_tracker.getStream());
 
 		draw(this);
 	}
@@ -91,7 +89,7 @@ public class LightTracker extends PApplet implements IView {
 	public void mouseExited() {
 		_mainView.mouseExited(mouseX, mouseY);
 	}
-	
+
 	@Override
 	public void mouseReleased() {
 		_mainView.mouseReleased(mouseX, mouseY);
@@ -101,6 +99,7 @@ public class LightTracker extends PApplet implements IView {
 	public void mouseWheel(MouseEvent evt) {
 		_mainView.mouseWheel(evt.getCount());
 	}
+
 	@Override
 	public void addChild(IView child) {
 		_childs.add(child);
@@ -181,5 +180,17 @@ public class LightTracker extends PApplet implements IView {
 
 	public void registerSONRegion(SONRegion region) {
 		_region = region;
+	}
+
+	public void registerTracker(Tracker tracker) {
+		_tracker = tracker;
+	}
+
+	public Tracker getTracker() {
+		return _tracker;
+	}
+
+	public void registerSON(SimpleOpenNI son) {
+		_son = son;
 	}
 }

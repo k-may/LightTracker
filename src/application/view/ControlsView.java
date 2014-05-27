@@ -34,8 +34,10 @@ public class ControlsView extends View implements ControlListener {
 	Knob xPos;
 	Knob yPos;
 	Knob zPos;
-	
+
 	Knob scale;
+
+	Knob threshold;
 
 	Bang save;
 
@@ -51,93 +53,93 @@ public class ControlsView extends View implements ControlListener {
 	private void createChilds() {
 		controller = new ControlP5(LightTracker.instance);
 
+		controller.setColorCaptionLabel(0);
 		controller.setAutoSpacing();
 
 		int y = _paddingTop;
 		int x = _paddingLeft;
 
-		int knobInc = _radius * 2 + 20;
-
 		pitch = controller.addKnob("pitch").setRadius(_radius)
 				.setPosition(x, y).setValue(_adapter.getPitch()).setMax(180);
-		y += knobInc;
+		x += 90;
 
 		roll = controller.addKnob("roll").setRadius(_radius).setPosition(x, y)
 				.setMax(180).setValue(_adapter.getRoll());
 
-		y += knobInc;
+		x += 90;
 		yaw = controller.addKnob("yaw").setRadius(_radius).setPosition(x, y)
 				.setMax(180).setValue(_adapter.getYaw());
 
-		y += knobInc;
+		x = _paddingLeft;
+		y += 140;
 		xPos = controller.addKnob("x").setRadius(_radius).setPosition(x, y)
 				.setMin(0).setMax(_width).setValue(_adapter.getPosition().x);
 
-		y += knobInc;
+		x += 90;
 
 		yPos = controller.addKnob("y").setRadius(_radius).setPosition(x, y)
 				.setMin(0).setMax(_height).setValue(_adapter.getPosition().y);
 
-		y += knobInc;
-
+		x += 90;
 		zPos = controller.addKnob("z").setRadius(_radius).setPosition(x, y)
 				.setMin(-1000).setMax(1000).setValue(_adapter.getPosition().z);
 
-		y += knobInc;
-		
-		scale = controller.addKnob("scale").setRadius(_radius).setPosition(x, y)
-				.setMin(-5).setMax(5).setValue(_adapter.getScale());
+		x = _paddingLeft;
+		y += 140;
 
-		y += knobInc;
+		scale = controller.addKnob("scale").setRadius(_radius)
+				.setPosition(x, y).setMin(-5).setMax(5)
+				.setValue(_adapter.getScale());
 
-		save = controller.addBang("save").setWidth(_radius).setPosition(x, y);
+		threshold = controller.addKnob("threshold").setRadius(_radius)
+				.setPosition(_paddingLeft, 700).setMin(0).setMax(2)
+				.setValue(_adapter.getBlobThreshold());
 
-		y += 30;
+		save = controller.addBang("save").setWidth(_radius)
+				.setPosition(59, 400);
 
 		controller.addListener(this);
 
 		_invalidated = true;
-		
-		_width = 100;
+
+		_width = 300;
 
 	}
 
 	@Override
 	public void draw(PApplet p) {
-		if (_invalidated) {
-			_invalidated = false;
+		scale.setPosition(90, 330);
+		save.setPosition(190, 350);
 
-		}
-		
-		p.fill(0, 100);
-		p.rect(_x, _y, 135, _height);
-		
-		
-		save.setPosition(59, 500);
+		p.strokeWeight(0.5f);
+		p.fill(0, 10);
+		p.rect(_x, _y, _width, _height);
+
 		super.draw(p);
 	}
 
 	@Override
 	public void controlEvent(ControlEvent event) {
 		String name = event.getController().getName();
-
+		float value = event.getController().getValue();
 		if (name == "pitch") {
-			_adapter.setPitch((int) event.getController().getValue());
+			_adapter.setPitch((int) value);
 		} else if (name == "roll") {
-			_adapter.setRoll((int) event.getController().getValue());
+			_adapter.setRoll((int) value);
 		} else if (name == "yaw") {
-			_adapter.setYaw((int) event.getController().getValue());
+			_adapter.setYaw((int) value);
 		} else if (name == "x") {
-			_adapter.setX((int) event.getController().getValue());
+			_adapter.setX((int) value);
 		} else if (name == "y") {
-			_adapter.setY((int) event.getController().getValue());
+			_adapter.setY((int) value);
 		} else if (name == "z") {
-			_adapter.setZ((int) event.getController().getValue());
+			_adapter.setZ((int) value);
 		} else if (name == "save") {
 			_adapter.save();
-		} else if(name == "scale"){
-			_adapter.setScale(event.getController().getValue());
+		} else if (name == "scale") {
+			_adapter.setScale(value);
+		} else if (name == "threshold") {
+			_adapter.setBlobThreshold(value);
 		}
 	}
-
 }

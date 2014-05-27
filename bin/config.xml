@@ -7,6 +7,9 @@
     <x>33</x>
     <y>0</y>
     <z>49</z>
-    <scale>5</scale>
+    <scale>5.0</scale>
   </model>
+  <kinect>
+    <threshold>0.24999996</threshold>
+  </kinect>
 </data>

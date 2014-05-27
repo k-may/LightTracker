@@ -31,6 +31,10 @@ public class ColladaModelAdapter {
 
 	private float _scale;
 
+	private float _blobThreshold;
+
+	private ArrayList<IAdapterObserver> _observers;
+
 	/*
 	 * contains reference to 3D model
 	 */
@@ -43,6 +47,7 @@ public class ColladaModelAdapter {
 		_yaw = _xml.getYaw();
 		_position = _xml.getPosition();
 		_scale = _xml.getScale();
+		_blobThreshold = _xml.getBlogThreshold();
 
 		_length = _model.getOrigTriangles().length;
 	}
@@ -67,11 +72,27 @@ public class ColladaModelAdapter {
 			for (int i = 0; i < triangles.length; i++) {
 				_transformed[i] = triangles[i].applyMatrix(mat);
 			}
+			
+			changed();
 		}
 
 		return _transformed;
 	}
 
+	
+	private void changed() {
+		for(IAdapterObserver aO : _observers)
+			aO.changed();
+	}
+
+	public void addObserver(IAdapterObserver o){
+		if(_observers == null)
+			_observers = new ArrayList<>();
+			
+		_observers.add(o);
+		
+		changed();
+	}
 	/*
 	 * process incoming light vectors and calculate additive light values on
 	 * each face of the model
@@ -158,5 +179,19 @@ public class ColladaModelAdapter {
 	public void setScale(float value) {
 		_scale = value;
 		_invalidated = true;
+	}
+
+	public float getBlobThreshold() {
+		return _blobThreshold;
+	}
+	
+	public void setBlobThreshold(float value){
+		_blobThreshold = value;
+		_invalidated = true;
+	}
+
+	public int streamWidth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
